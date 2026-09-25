@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Videos Pies | Videos Reales y Generados con IA</title>
+  <meta name="description" content="videos para chismes">
+  <style>
+    :root {
+      --bg: #12060e;
+      --bg2: #1c0915;
+      --card: #1f0a18;
+      --card-border: #3a1229;
+      --pink: #ff2e88;
+      --purple: #a855f7;
+      --text: #fbe9f2;
+      --muted: #c99ab4;
+      --radius: 16px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(1200px 600px at 50% -10%, #3b0f2e 0%, var(--bg) 55%) fixed, var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header.hero {
+      text-align: center;
+      padding: 3.5rem 1.25rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header.hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("trasero.jpeg") center/cover no-repeat;
+      opacity: .14;
+      pointer-events: none;
+    }
+
+    header.hero>* {
+      position: relative
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      background: rgba(255, 46, 136, .12);
+      border: 1px solid var(--card-border);
+      padding: .4rem .9rem;
+      border-radius: 999px;
+      font-size: .85rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .badge svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--pink)
+    }
+
+    .badge strong {
+      color: var(--text);
+      font-variant-numeric: tabular-nums
+    }
+
+    h1 {
+      font-size: clamp(2.2rem, 7vw, 3.8rem);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      background: linear-gradient(90deg, #ff2e88, #a855f7, #ff7ab8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: clamp(1rem, 3.5vw, 1.25rem);
+      margin-top: .5rem
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1rem 4rem
+    }
+
+    section {
+      margin-top: 2.5rem
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      margin-bottom: 1.1rem
+    }
+
+    .section-head h2 {
+      font-size: 1.35rem
+    }
+
+    .section-head .line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--pink), transparent)
+    }
+
+    .section-head .count {
+      font-size: .75rem;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      padding: .2rem .6rem;
+      border-radius: 999px;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: 1fr
+    }
+
+    @media(min-width:640px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr)
+      }
+    }
+
+    @media(min-width:960px) {
+      .grid.videos {
+        grid-template-columns: repeat(4, 1fr)
+      }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .card:hover,
+    .card:focus-within {
+      transform: translateY(-3px);
+      border-color: var(--pink);
+      box-shadow: 0 10px 30px rgba(255, 46, 136, .25);
+    }
+
+    .media-wrap {
+      position: relative;
+      background: #000
+    }
+
+    video.thumb {
+      width: 100%;
+      aspect-ratio: 9/16;
+      object-fit: cover;
+      display: block;
+      background: #000
+    }
+
+    .views {
+      position: absolute;
+      top: .6rem;
+      right: .6rem;
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      background: rgba(0, 0, 0, .65);
+      backdrop-filter: blur(4px);
+      padding: .3rem .6rem;
+      border-radius: 999px;
+      font-size: .78rem;
+      font-weight: 600;
+    }
+
+    .views svg {
+      width: 15px;
+      height: 15px;
+      stroke: #ff7ab8
+    }
+
+    .card-body {
+      padding: .8rem .9rem 1rem
+    }
+
+    .card-body h3 {
+      font-size: .95rem;
+      margin-bottom: .25rem
+    }
+
+    .card-body p {
+      font-size: .8rem;
+      color: var(--muted)
+    }
+
+    .grid.photos img {
+      width: 100%;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      display: block;
+      cursor: pointer;
+      background: var(--bg2);
+    }
+
+    .grid.photos .card {
+      cursor: pointer
+    }
+
+    /* Me gusta */
+    .like-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      background: rgba(255, 46, 136, .08);
+      border: 1px solid var(--card-border);
+      color: var(--muted);
+      padding: .5rem .9rem;
+      border-radius: 999px;
+      font-size: .85rem;
+      font-weight: 700;
+      cursor: pointer;
+      min-height: 44px;
+      font-variant-numeric: tabular-nums;
+      transition: transform .15s ease, border-color .15s ease, color .15s ease, background .15s ease;
+    }
+
+    .like-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    .like-btn:hover {
+      border-color: var(--pink);
+      color: var(--text);
+    }
+
+    .like-btn.liked {
+      background: rgba(255, 46, 136, .18);
+      border-color: var(--pink);
+      color: #ff7ab8;
+    }
+
+    .like-btn.liked svg {
+      fill: var(--pink);
+      stroke: var(--pink);
+    }
+
+    .like-btn.pop {
+      animation: pop .25s ease;
+    }
+
+    @keyframes pop {
+      50% {
+        transform: scale(1.25);
+      }
+    }
+
+    /* Donación */
+    .donate {
+      margin-top: 2.5rem;
+      text-align: center;
+      background: linear-gradient(135deg, #2a0d20, #1c0915);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2rem 1.25rem;
+    }
+
+    .donate h2 {
+      font-size: 1.4rem;
+      margin-bottom: .4rem
+    }
+
+    .donate .key {
+      display: inline-block;
+      margin: .8rem 0;
+      padding: .55rem 1.2rem;
+      border: 1px dashed var(--pink);
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: .03em;
+      color: #ffd3e6;
+      background: rgba(255, 46, 136, .08);
+    }
+
+    .donate p.desc {
+      color: var(--muted);
+      margin-bottom: 1.1rem
+    }
+
+    .btn-nequi {
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      background: linear-gradient(90deg, var(--pink), var(--purple));
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: .85rem 1.8rem;
+      border-radius: 999px;
+      transition: transform .15s ease, box-shadow .15s ease;
+      box-shadow: 0 6px 24px rgba(255, 46, 136, .4);
+    }
+
+    .btn-nequi:hover {
+      transform: scale(1.04)
+    }
+
+    .btn-nequi:active {
+      transform: scale(.97)
+    }
+
+    .btn-nequi svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: #fff;
+      stroke-width: 2
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: .8rem;
+      padding: 1.5rem 1rem 2.5rem
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+      background: rgba(8, 2, 6, .94);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 1rem;
+    }
+
+    .lightbox.open {
+      display: flex
+    }
+
+    .lightbox img {
+      max-width: 100%;
+      max-height: 78vh;
+      border-radius: 12px;
+      object-fit: contain;
+      border: 1px solid var(--card-border);
+    }
+
+    .lb-bar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1rem;
+      color: var(--text)
+    }
+
+    .lb-btn {
+      background: rgba(255, 46, 136, .15);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+
+    .lb-btn:hover {
+      background: rgba(255, 46, 136, .35)
+    }
+
+    .lb-close {
+      position: absolute;
+      top: .9rem;
+      right: .9rem;
+      background: rgba(255, 46, 136, .2);
+      border: 1px solid var(--card-border);
+      color: #fff;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .lb-counter {
+      font-size: .85rem;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 1.5rem;
+      transform: translateX(-50%) translateY(20px);
+      background: #2a0d20;
+      border: 1px solid var(--pink);
+      color: var(--text);
+      padding: .7rem 1.3rem;
+      border-radius: 999px;
+      font-size: .9rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s, transform .25s;
+      z-index: 60;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0)
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="hero">
+    <div class="badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+        <circle cx="12" cy="12" r="3" />
+      </svg>
+      <span>visitantes: <strong id="visitantes">…</strong></span>
+
+
+    </div>
+    <a class="btn-nequi" target="_self" href="index.html">Inicio</a>
+    <h1>Videos Reales y Generados con IA</h1>
+    <p class="subtitle">videos para Pies</p>
+  </header>
+
+  <main>
+    <section class="donate" aria-label="Donaciones">
+      <h2>💜 Apóyame con un Nequi</h2>
+      <div class="key">@NEQUICRI35566</div>
+      <p class="desc">Puedes donarme desde 1000 pesos, solo si quieres :(</p>
+      <button class="btn-nequi" id="btnNequi" type="button">
+        <svg viewBox="0 0 24 24">
+          <rect x="2" y="5" width="20" height="14" rx="2" />
+          <line x1="2" y1="10" x2="22" y2="10" />
+        </svg>
+        Donar con Nequi
+      </button>
+    </section>
+    <section id="videos" aria-label="Videos">
+      <div class="section-head">
+        <h2>🎬 Videos</h2><span class="count">4 videos</span>
+        <div class="line"></div>
+      </div>
+      <div class="grid videos">
+        <article class="card">
+          <div class="media-wrap">
+            <video class="thumb" src="./myperson/jacuzzi.mp4" poster="./myperson/pies6.jpg" controls preload="metadata"
+              playsinline></video>
+            <span class="views"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg><span class="views-num">0</span></span>
+          </div>
+          <div class="card-body">
+            <h3>Pies #1 🔥</h3>
+            <p>Pies en jacuzzi</p>
+            <button class="like-btn" data-like-id="video-1" aria-pressed="false" aria-label="Me gusta el video 1"
+              type="button"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M12 21s-7.5-4.9-9.5-9C1 8.5 3 5 6.5 5c2 0 3.5 1 4.5 2.5C12 6 13.5 5 15.5 5 19 5 21 8.5 20.5 12c-2 4.1-8.5 9-8.5 9z" />
+              </svg><span class="like-count">0</span></button>
+          </div>
+        </article>
+        <article class="card">
+          <div class="media-wrap">
+            <video class="thumb" src="./myperson/aire.mp4" poster="./myperson/pies4.jpg" controls preload="metadata"
+              playsinline></video>
+            <span class="views"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg><span class="views-num">0</span></span>
+          </div>
+          <div class="card-body">
+            <h3>Pies #2 👀</h3>
+            <p>Pies al aire libre</p>
+            <button class="like-btn" data-like-id="video-2" aria-pressed="false" aria-label="Me gusta el video 2"
+              type="button"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M12 21s-7.5-4.9-9.5-9C1 8.5 3 5 6.5 5c2 0 3.5 1 4.5 2.5C12 6 13.5 5 15.5 5 19 5 21 8.5 20.5 12c-2 4.1-8.5 9-8.5 9z" />
+              </svg><span class="like-count">0</span></button>
+          </div>
+        </article>
+        <article class="card">
+          <div class="media-wrap">
+            <video class="thumb" src="./myperson/moviendo.mp4" poster="./myperson/pies3.jpg" controls preload="metadata"
+              playsinline></video>
+            <span class="views"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg><span class="views-num">0</span></span>
+          </div>
+          <div class="card-body">
+            <h3>Pies #3 😱</h3>
+            <p>Pies en el mueble</p>
+            <button class="like-btn" data-like-id="video-3" aria-pressed="false" aria-label="Me gusta el video 3"
+              type="button"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M12 21s-7.5-4.9-9.5-9C1 8.5 3 5 6.5 5c2 0 3.5 1 4.5 2.5C12 6 13.5 5 15.5 5 19 5 21 8.5 20.5 12c-2 4.1-8.5 9-8.5 9z" />
+              </svg><span class="like-count">0</span></button>
+          </div>
+        </article>
+        <article class="card">
+          <div class="media-wrap">
+            <video class="thumb" src="./myperson/playa.mp4" poster="./myperson/pies1.jpg" controls preload="metadata"
+              playsinline></video>
+            <span class="views"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg><span class="views-num">0</span></span>
+          </div>
+          <div class="card-body">
+            <h3>Pies #4 🍿</h3>
+            <p>Pies en muelle</p>
+            <button class="like-btn" data-like-id="video-4" aria-pressed="false" aria-label="Me gusta el video 4"
+              type="button"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M12 21s-7.5-4.9-9.5-9C1 8.5 3 5 6.5 5c2 0 3.5 1 4.5 2.5C12 6 13.5 5 15.5 5 19 5 21 8.5 20.5 12c-2 4.1-8.5 9-8.5 9z" />
+              </svg><span class="like-count">0</span></button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="fotos" aria-label="Imágenes">
+      <div class="section-head">
+        <h2>📸 Imágenes</h2><span class="count">Toca para ampliar</span>
+        <div class="line"></div>
+      </div>
+      <div class="grid photos" id="photoGrid">
+        <article class="card" tabindex="0"><img src="./myperson/pies1.jpg" alt="Foto 1" loading="lazy">
+          <div class="card-body"><button class="like-btn" data-like-id="foto-1" aria-pressed="false"
+              aria-label="Me gusta la foto 1" type="button"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path
+                  d="M12 21s-7.5-4.9-9.5-9C1 8.5 3 5 6.5 5c2 0 3.5 1 4.5 2.5C12 6 13.5 5 15.5 5 19 5 21 8.5 20.5 12c-2 4.1-8.5 9-8.5 9z" />
+              </svg><span class="like-count">0</span></button></div>
+        </article>
+        <article class="card" tabindex="0"><img src="./myperson/pies2.jpg" alt="Foto 2" loading="lazy">
+          <div class="card-body"><button class="like-btn" data-like-id="foto-2" aria-pressed="false"
+              aria-label="Me gusta la foto 2" type="button"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path
+                  d="M12 21s-7.5-4.9-9.5-9C1 8.5 3 5 6.5 5c2 0 3.5 1 4.5 2.5C12 6 13.5 5 15.5 5 19 5 21 8.5 20.5 12c-2 4.1-8.5 9-8.5 9z" />
+              </svg><span class="like-count">0</span></button></div>
+        </article>
+        <article class="card" tabindex="0"><img src="./myperson/pies3.jpg" alt="Foto 3" loading="lazy">
+          <div class="card-body"><button class="like-btn" data-like-id="foto-3" aria-pressed="false"
+              aria-label="Me gusta la foto 3" type="button"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path
+                  d="M12 21s-7.5-4.9-9.5-9C1 8.5 3 5 6.5 5c2 0 3.5 1 4.5 2.5C12 6 13.5 5 15.5 5 19 5 21 8.5 20.5 12c-2 4.1-8.5 9-8.5 9z" />
+              </svg><span class="like-count">0</span></button></div>
+        </article>
+        <article class="card" tabindex="0"><img src="./myperson/pies4.jpg" alt="Foto 4" loading="lazy">
+          <div class="card-body"><button class="like-btn" data-like-id="foto-4" aria-pressed="false"
+              aria-label="Me gusta la foto 4" type="button"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path
+                  d="M12 21s-7.5-4.9-9.5-9C1 8.5 3 5 6.5 5c2 0 3.5 1 4.5 2.5C12 6 13.5 5 15.5 5 19 5 21 8.5 20.5 12c-2 4.1-8.5 9-8.5 9z" />
+              </svg><span class="like-count">0</span></button></div>
+        </article>
+        <article class="card" tabindex="0"><img src="./myperson/pies5.jpg" alt="Foto 4" loading="lazy">
+          <div class="card-body"><button class="like-btn" data-like-id="foto-4" aria-pressed="false"
+              aria-label="Me gusta la foto 4" type="button"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path
+                  d="M12 21s-7.5-4.9-9.5-9C1 8.5 3 5 6.5 5c2 0 3.5 1 4.5 2.5C12 6 13.5 5 15.5 5 19 5 21 8.5 20.5 12c-2 4.1-8.5 9-8.5 9z" />
+              </svg><span class="like-count">0</span></button></div>
+        </article>
+        <article class="card" tabindex="0"><img src="./myperson/pies6.jpg" alt="Foto 4" loading="lazy">
+          <div class="card-body"><button class="like-btn" data-like-id="foto-4" aria-pressed="false"
+              aria-label="Me gusta la foto 4" type="button"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path
+                  d="M12 21s-7.5-4.9-9.5-9C1 8.5 3 5 6.5 5c2 0 3.5 1 4.5 2.5C12 6 13.5 5 15.5 5 19 5 21 8.5 20.5 12c-2 4.1-8.5 9-8.5 9z" />
+              </svg><span class="like-count">0</span></button></div>
+        </article>
+        <article class="card" tabindex="0"><img src="./myperson/pies7.jpg" alt="Foto 4" loading="lazy">
+          <div class="card-body"><button class="like-btn" data-like-id="foto-4" aria-pressed="false"
+              aria-label="Me gusta la foto 4" type="button"><svg viewBox="0 0 24 24" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path
+                  d="M12 21s-7.5-4.9-9.5-9C1 8.5 3 5 6.5 5c2 0 3.5 1 4.5 2.5C12 6 13.5 5 15.5 5 19 5 21 8.5 20.5 12c-2 4.1-8.5 9-8.5 9z" />
+              </svg><span class="like-count">0</span></button></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="donate" aria-label="Donaciones">
+      <h2>💜 Apóyame con un Nequi</h2>
+      <div class="key">@NEQUICRI35566</div>
+      <p class="desc">Puedes donarme desde 1000 pesos, solo si quieres :(</p>
+      <button class="btn-nequi" id="btnNequi" type="button">
+        <svg viewBox="0 0 24 24">
+          <rect x="2" y="5" width="20" height="14" rx="2" />
+          <line x1="2" y1="10" x2="22" y2="10" />
+        </svg>
+        Donar con Nequi
+      </button>
+    </section>
+  </main>
+
+  <footer>Videos en redes · videos para chismes 💋</footer>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Vista de imagen">
+    <button class="lb-close" id="lbClose" type="button" aria-label="Cerrar">✕</button>
+    <img id="lbImg" src="foto1.jpeg" alt="Imagen ampliada">
+    <div class="lb-bar">
+      <button class="lb-btn" id="lbPrev" type="button" aria-label="Anterior">‹</button>
+      <span class="lb-counter" id="lbCounter">1 / 4</span>
+      <button class="lb-btn" id="lbNext" type="button" aria-label="Siguiente">›</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      function fmt(n) {
+        if (n >= 1000000) return (n / 1000000).toFixed(1).replace(".0", "") + "M";
+        if (n >= 1000) return (n / 1000).toFixed(1).replace(".0", "") + "K";
+        return String(n);
+      }
+
+      // Vistas aleatorias por video
+      document.querySelectorAll(".views-num").forEach(function (el) {
+        el.textContent = fmt(Math.floor(Math.random() * 9000) + 1500);
+      });
+
+      // Me gusta: toggle de 1 por persona, persiste en localStorage
+      document.querySelectorAll("[data-like-id]").forEach(function (btn) {
+        var id = btn.getAttribute("data-like-id");
+        var key = "vr_like_" + id;
+        var baseKey = "vr_likebase_" + id;
+        var num = btn.querySelector(".like-count");
+        var base = 0;
+        try {
+          base = parseInt(localStorage.getItem(baseKey) || "0", 10) || 0;
+          if (!base) {
+            base = Math.floor(Math.random() * 1850) + 150;
+            localStorage.setItem(baseKey, String(base));
+          }
+        } catch (e) {
+          base = Math.floor(Math.random() * 1850) + 150;
+        }
+        var liked = false;
+        try { liked = localStorage.getItem(key) === "1"; } catch (e) { }
+        function render() {
+          num.textContent = fmt(base + (liked ? 1 : 0));
+          btn.classList.toggle("liked", liked);
+          btn.setAttribute("aria-pressed", liked ? "true" : "false");
+        }
+        render();
+        btn.addEventListener("click", function (ev) {
+          ev.stopPropagation();
+          liked = !liked;
+          try {
+            if (liked) { localStorage.setItem(key, "1"); }
+            else { localStorage.removeItem(key); }
+          } catch (e) { }
+          render();
+          if (liked) {
+            btn.classList.remove("pop");
+            void btn.offsetWidth;
+            btn.classList.add("pop");
+          }
+        });
+      });
+
+      // Contador de visitantes: base simulada + localStorage
+      try {
+        var BASE = 250;
+        var seen = parseInt(localStorage.getItem("vr_visitas") || "0", 10) || 0;
+        seen += 1;
+        localStorage.setItem("vr_visitas", String(seen));
+        document.getElementById("visitantes").textContent = (BASE + seen).toLocaleString("es-CO");
+      } catch (e) {
+        document.getElementById("visitantes").textContent = "12.400+";
+      }
+
+      // Lightbox de imágenes (móvil + desktop)
+      var photos = Array.prototype.slice.call(document.querySelectorAll("#photoGrid img"));
+      var lb = document.getElementById("lightbox");
+      var lbImg = document.getElementById("lbImg");
+      var lbCounter = document.getElementById("lbCounter");
+      var idx = 0;
+
+      function openLb(i) {
+        idx = (i + photos.length) % photos.length;
+        lbImg.src = photos[idx].src;
+        lbImg.alt = photos[idx].alt;
+        lbCounter.textContent = (idx + 1) + " / " + photos.length;
+        lb.classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+      function closeLb() {
+        lb.classList.remove("open");
+        document.body.style.overflow = "";
+      }
+      photos.forEach(function (img, i) {
+        img.addEventListener("click", function () { openLb(i); });
+        img.parentElement.addEventListener("keydown", function (ev) {
+          if (ev.target.closest && ev.target.closest(".like-btn")) return;
+          if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); openLb(i); }
+        });
+      });
+      document.getElementById("lbClose").addEventListener("click", closeLb);
+      document.getElementById("lbPrev").addEventListener("click", function (ev) { ev.stopPropagation(); openLb(idx - 1); });
+      document.getElementById("lbNext").addEventListener("click", function (ev) { ev.stopPropagation(); openLb(idx + 1); });
+      lb.addEventListener("click", function (ev) { if (ev.target === lb) closeLb(); });
+      document.addEventListener("keydown", function (ev) {
+        if (!lb.classList.contains("open")) return;
+        if (ev.key === "Escape") closeLb();
+        if (ev.key === "ArrowLeft") openLb(idx - 1);
+        if (ev.key === "ArrowRight") openLb(idx + 1);
+      });
+      var touchX = null;
+      lb.addEventListener("touchstart", function (ev) { touchX = ev.touches[0].clientX; }, { passive: true });
+      lb.addEventListener("touchend", function (ev) {
+        if (touchX === null) return;
+        var dx = ev.changedTouches[0].clientX - touchX;
+        if (dx > 50) openLb(idx - 1);
+        else if (dx < -50) openLb(idx + 1);
+        touchX = null;
+      }, { passive: true });
+
+      // Botón Nequi: copiar llave
+      var toast = document.getElementById("toast");
+      var toastTimer = null;
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add("show");
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () { toast.classList.remove("show"); }, 2200);
+      }
+      document.getElementById("btnNequi").addEventListener("click", function () {
+        var key = "@NEQUICRI35566";
+        function done() { showToast("¡Llave copiada! " + key + " 💜"); }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(key).then(done, function () { fallback(); });
+        } else { fallback(); }
+        function fallback() {
+          var ta = document.createElement("textarea");
+          ta.value = key;
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand("copy"); } catch (e) { }
+          document.body.removeChild(ta);
+          done();
+        }
+      });
+    })();
+  </script>
+</body>
+
+</html>
